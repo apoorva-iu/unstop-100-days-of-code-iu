@@ -1,24 +1,15 @@
-import os
+import subprocess
 
-day = int(input("Enter day number: "))
-problems = int(input("How many problems today? "))
+# Ask for a commit message
+message = input("Enter commit message: ")
 
-folder = f"Day{day:02d}"
+# Add all changed files
+subprocess.run(["git", "add", "."])
 
-os.makedirs(folder, exist_ok=True)
+# Commit the changes
+subprocess.run(["git", "commit", "-m", message])
 
-for i in range(1, problems + 1):
+# Push to GitHub
+subprocess.run(["git", "push"])
 
-    filename = f"Problem{i:02d}.py"
-    filepath = os.path.join(folder, filename)
-
-    if not os.path.exists(filepath):
-        with open(filepath, "w") as file:
-            file.write(
-                f"# Unstop 100 Days of Code\n"
-                f"# Day {day}\n"
-                f"# Problem {i}\n\n"
-            )
-
-print(f"\n{folder} created successfully!")
-print(f"{problems} problem files created.")
+print("\nSuccessfully pushed to GitHub!")
