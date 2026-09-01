@@ -1,15 +1,30 @@
 import subprocess
+import os
 
-# Ask for a commit message
-message = input("Enter commit message: ")
+# Ask which day you want to push
+day = input("Enter day number: ")
 
-# Add all changed files
-subprocess.run(["git", "add", "."])
+# Create folder name
+folder = f"Day{int(day):02d}"
 
-# Commit the changes
-subprocess.run(["git", "commit", "-m", message])
+# Check if folder exists
+if not os.path.exists(folder):
+    print(f"{folder} does not exist!")
+    exit()
 
-# Push to GitHub
-subprocess.run(["git", "push"])
+# Add ONLY that day's folder
+subprocess.run(["git", "add", folder])
 
-print("\nSuccessfully pushed to GitHub!")
+# Automatic commit message
+message = f"Day {int(day):02d}: Completed"
+
+# Commit
+result = subprocess.run(["git", "commit", "-m", message])
+
+# Push only if commit was successful
+if result.returncode == 0:
+    subprocess.run(["git", "push"])
+    print(f"\n{message}")
+    print("Successfully pushed to GitHub!")
+else:
+    print("\nNothing new to commit.")
